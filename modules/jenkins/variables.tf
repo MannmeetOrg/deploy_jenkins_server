@@ -13,8 +13,8 @@ variable "subnet_ids" {
   type        = string
 }
 
-variable "security_group_sg_id" {
-  description = "Security group ID for Jenkins server"
+variable "ami_id" {
+  description = "ami id of jenkins image"
   type        = string
 }
 
