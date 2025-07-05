@@ -1,3 +1,4 @@
+
 variable "ami_id" {
   description = "Jenkins AMI ID"
   type        = string
