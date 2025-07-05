@@ -26,8 +26,8 @@ jobs:
 
       - name: Terraform Init
         run: |
-          terraform init -var-file="main.tfvars"
+          terraform init -var-file="env_main/main.tfvars"
 
       - name: Terraform Apply Jenkins Server Module Only
         run: |
-          terraform apply -target=module.jenkins -var-file="main.tfvars" -auto-approve
+          terraform apply -target=module.jenkins -var-file="env_main/main.tfvars" -auto-approve
