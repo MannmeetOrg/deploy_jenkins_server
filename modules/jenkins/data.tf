@@ -12,5 +12,4 @@ data "aws_ami" "amazonlinux2023" {
     name   = "architecture"
     values = ["x86_64"]
   }
-  owners = ["959620655822"]
-}
+ }
