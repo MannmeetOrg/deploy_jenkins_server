@@ -29,3 +29,5 @@ variable "sg_ids" {
 }
 
 variable "region" {}
+
+variable "vpc_cidr" {}

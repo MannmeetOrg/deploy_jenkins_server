@@ -21,3 +21,6 @@ variable "security_group_ids" {
   type = list(string)
 }
 variable "region" {}
+
+variable "vpc_id" {}
+variable "vpc_cidr" {}
