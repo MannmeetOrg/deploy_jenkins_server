@@ -1,18 +1,12 @@
 # terraform-jenkins-server
 
+
 module "jenkins" {
+  source = "../modules/jenkins"
 
-  source = "./modules/jenkins"
-
-  instance_type        = var.instance_type
-  ami_id               = var.ami_id
-  key_name             = var.key_name
-  vpc_id               = var.vpc_id
-  subnet_id            = var.subnet_id
-  security_group_ids   = var.security_group_ids
-  user_data            = var.user_data
-
-  tags = {
-    Name        = "Jenkins-Server"
-  }
+  jenkins_ami_id        = var.ami_id
+  jenkins_instance_type = var.instance_type
+  jenkins_subnet_id     = var.subnet_id
+  jenkins_sg_id         = var.security_group_ids
+  jenkins_key_pair      = var.key_name
 }
