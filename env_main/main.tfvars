@@ -11,6 +11,6 @@ vpc = {
   key_name                = "aws-key-pair"
   subnet_id               = "[us-east-1a, us-east-1b]"
   default_vpc_id          = "vpc-01b0e42325efca6e6"
-  vpc_security_group_ids  = ["sg-04d1ac6f01f77056a"]
+  security_group_ids      = ["sg-04d1ac6f01f77056a"]
 
 }

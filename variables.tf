@@ -14,10 +14,10 @@ variable "subnet_id" {
   type        = string
 }
 variable "key_name" {}
-variable "vpc_id" {}
+
+variable "sg_ids" {}
+
 variable "security_group_ids" {
   type = list(string)
 }
-variable "iam_instance_profile" {}
-variable "user_data" {}
-
+variable "region" {}
