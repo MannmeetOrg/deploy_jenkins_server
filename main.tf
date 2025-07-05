@@ -10,7 +10,7 @@ module "jenkins" {
   vpc_id               = var.vpc_id
   subnet_id            = var.subnet_id
   security_group_ids   = var.security_group_ids
-  user_data      = var.user_data
+  user_data            = var.user_data
 
   tags = {
     Name        = "Jenkins-Server"
