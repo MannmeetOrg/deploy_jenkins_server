@@ -1,5 +1,16 @@
+
 data "aws_ami" "amazonlinux2023" {
   most_recent = true
-  name_regex  = "Amazon Linux 2023 kernel-6.1"
+  owners      = ["amazon"]
+
+  filter {
+    name   = "name"
+    values = ["al2023-ami-*-x86_64"]
+  }
+
+  filter {
+    name   = "architecture"
+    values = ["x86_64"]
+  }
   owners = ["959620655822"]
 }
