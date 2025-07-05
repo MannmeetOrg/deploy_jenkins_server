@@ -2,7 +2,7 @@
 
 
 module "jenkins" {
-  source = "../modules/jenkins"
+  source = "./modules/jenkins"
 
   jenkins_ami_id        = var.ami_id
   jenkins_instance_type = var.instance_type
