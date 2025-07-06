@@ -30,18 +30,18 @@ jobs:
     - name: Download and Register EC2 Key Pair from S3
       run: |
         echo "Downloading key from S3..."
-        aws s3 cp s3://jenkins-server-ec2/jenkinskey.pem aws_key_pair.pem
+        aws s3 cp s3://jenkins-server-ec2/jenkinskey.pem jenkinskey.pem
         
         echo "Setting file permissions..."
-        chmod 400 aws_key_pair.pem
+        chmod 400 jenkinskey.pem
         
         echo "Generating public key..."
-        ssh-keygen -y -f aws_key_pair.pem > aws_key_pair.pub
+        ssh-keygen -y -f jenkinskey.pem > jenkinskey.pub
         
         echo "Importing key pair to EC2..."
         aws ec2 import-key-pair \
-          --key-name aws-key-pair \
-          --public-key-material fileb://aws_key_pair.pub \
+          --key-name jenkinskey \
+          --public-key-material fileb://jenkinskey.pub \
           --region us-east-1 || echo "Key pair might already exist"
 
     - name: Terraform Init
