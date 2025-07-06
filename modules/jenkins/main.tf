@@ -59,7 +59,7 @@ resource "aws_instance" "jenkins" {
   subnet_id                   = var.subnet_id
   associate_public_ip_address = true
   key_name                    = var.key_pair
-  vpc_security_group_ids      = var.sg_ids
+  vpc_security_group_ids      = [aws_security_group.jenkins_sg.id]
   iam_instance_profile        = aws_iam_instance_profile.jenkins_profile.name
 
   user_data = file("${path.module}/bootstrap.sh")
