@@ -10,6 +10,8 @@ module "jenkins" {
   subnet_id     = var.subnet_id
   sg_ids        = var.sg_ids
   key_pair      = var.key_name
+  jenkins_s3    = var.jenkins_s3
+
 }
 
 

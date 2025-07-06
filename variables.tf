@@ -32,3 +32,8 @@ variable "key_name" {
   description = "Key pair name for Jenkins server"
   type        = string
 }
+
+variable "jenkins_s3" {
+  description = "S3 bucket Jenkins Role"
+  type        = string
+}

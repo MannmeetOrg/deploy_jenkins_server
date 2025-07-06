@@ -15,6 +15,28 @@ resource "aws_iam_role" "jenkins_role" {
   })
 }
 
+resource "aws_iam_role_policy" "jenkins_s3_policy" {
+  name = "jenkins-s3-policy"
+  role = aws_iam_role.jenkins_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "s3:GetObject",
+          "s3:ListBucket"
+        ],
+        Resource = [
+          "arn:aws:s3:::jenkins-server-ec2",
+          "arn:aws:s3:::jenkins-server-ec2/jenkinskey.pem"
+        ]
+      }
+    ]
+  })
+}
+
 resource "aws_iam_instance_profile" "jenkins_profile" {
   name = "jenkins-profile"
   role = aws_iam_role.jenkins_role.name

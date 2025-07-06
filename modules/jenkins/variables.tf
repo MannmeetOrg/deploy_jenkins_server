@@ -32,3 +32,4 @@ variable "key_pair" {
   description = "EC2 Key Pair Name"
   type        = string
 }
+variable "jenkins_s3" {}
