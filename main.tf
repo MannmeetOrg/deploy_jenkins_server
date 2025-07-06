@@ -4,7 +4,7 @@
 module "jenkins" {
   source = "./modules/jenkins"
 
-   ami_id        = var.ami_id
+   ami_id        = var.vpc["ami_id"]
    vpc_id        = var.vpc_id
    region        = var.region
    instance_type = var.instance_type

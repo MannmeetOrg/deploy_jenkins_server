@@ -9,7 +9,7 @@ vpc = {
   ami_id                  = "ami-05ffe3c48a9991133"
   instance_type           = "t3.micro"
   key_name                = "aws-key-pair"
-  subnet_id               = "[us-east-1a, us-east-1b]"
+  subnet_id               = "subnet-0b042f40c13ff1008"
   vpc_id                  = "vpc-01b0e42325efca6e6"
   security_group_ids      = ["sg-04d1ac6f01f77056a"]
 
