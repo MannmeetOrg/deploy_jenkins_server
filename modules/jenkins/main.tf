@@ -1,4 +1,27 @@
 
+resource "aws_iam_role" "jenkins_role" {
+  name = "jenkins-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Action = "sts:AssumeRole"
+      Principal = {
+        Service = "ec2.amazonaws.com"
+      }
+      Effect = "Allow"
+      Sid    = ""
+    }]
+  })
+}
+
+resource "aws_iam_instance_profile" "jenkins_profile" {
+  name = "jenkins-profile"
+  role = aws_iam_role.jenkins_role.name
+}
+
+
+
 resource "aws_instance" "jenkins" {
   ami                         = var.ami_id
   instance_type               = var.instance_type
@@ -6,7 +29,7 @@ resource "aws_instance" "jenkins" {
   associate_public_ip_address = true
   key_name                    = var.key_pair
   vpc_security_group_ids      = var.sg_ids
-  iam_instance_profile        = "jenkins-profile"
+  iam_instance_profile        = aws_iam_instance_profile.jenkins_profile.name
 
   user_data = file("${path.module}/bootstrap.sh")
 
