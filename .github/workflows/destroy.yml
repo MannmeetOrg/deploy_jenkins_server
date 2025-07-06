@@ -25,7 +25,7 @@ jobs:
       - name: Download PEM key from S3 (optional)
         run: |
           echo "Downloading PEM key if needed for destroy (optional)"
-          aws s3 cp s3://your-secure-bucket/aws-key-pair.pem aws-key-pair.pem || true
+          aws s3 cp s3://jenkins-server-ec2/jenkinskey.pem aws-key-pair.pem || true
           chmod 400 aws-key-pair.pem || true
 
       - name: Setup Terraform
