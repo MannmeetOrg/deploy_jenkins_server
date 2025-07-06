@@ -23,11 +23,6 @@ variable "subnet_id" {
   type        = string
 }
 
-# variable "sg_ids" {
-#   description = "Security Group IDs"
-#   type        = list(string)
-# }
-
 variable "key_pair" {
   description = "EC2 Key Pair Name"
   type        = string
