@@ -22,10 +22,15 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
-      - name: Download PEM key from S3
+      - name: Download key pair from S3
         run: |
-          aws s3 cp s3://jenkins-server-ec2/jenkinskey.pem aws-key-pair.pem
-          chmod 400 aws-key-pair.pem
+          aws s3 cp s3://your-bucket/jenkinskey.pem aws_key_pair.pem
+          chmod 400 aws_key_pair.pem
+          ssh-keygen -y -f aws_key_pair.pem > aws_key_pair.pub
+          aws ec2 import-key-pair \
+            --key-name aws-key-pair \
+            --public-key-material fileb://aws_key_pair.pub \
+            --region us-east-1 || echo "Key pair might already exist"      
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
