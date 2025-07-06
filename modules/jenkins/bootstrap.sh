@@ -1,7 +1,8 @@
 #!/bin/bash
 sudo yum update -y
 #JAVA Install
-sudo yum install -y java-11-amazon-corretto
+sudo amazon-linux-extras enable corretto17
+sudo yum install java-17-amazon-corretto -y
 java -version
 
 # JENKINS INSTALL
