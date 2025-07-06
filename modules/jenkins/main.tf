@@ -8,7 +8,7 @@ resource "aws_instance" "jenkins" {
   vpc_security_group_ids      = var.sg_ids
   iam_instance_profile        = "jenkins-profile"
 
-  user_data = file("${path.module}/jenkins/bootstrap.sh")
+  user_data = file("${path.module}/bootstrap.sh")
 
   tags = {
     Name = "jenkins-server"

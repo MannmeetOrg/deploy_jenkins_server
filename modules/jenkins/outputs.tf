@@ -1,24 +1,25 @@
-output "jenkins_public_ip" {
+output "public_ip" {
   value = aws_instance.jenkins.public_ip
 }
 
-output "jenkins_instance_type" {
+
+output "instance_type" {
   value = aws_instance.jenkins.instance_type
 }
 
-output "jenkins_ami_id" {
+output "ami_id" {
   value = aws_instance.jenkins.id
 }
 
-output "jenkins_subnet_id" {
+output "subnet_id" {
   value = aws_instance.jenkins.subnet_id
 }
 
-output "jenkins_sg_id" {
+output "sg_id" {
   value = aws_instance.jenkins.security_groups
 }
 
 
-output "jenkins_key_pair" {
+output "key_pair" {
   value = aws_instance.jenkins.key_name
 }
