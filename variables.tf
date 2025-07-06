@@ -15,11 +15,11 @@ variable "subnet_id" {
 }
 variable "key_name" {}
 
-variable "sg_ids" {}
-
-variable "security_group_ids" {
-  type = list(string)
+variable "sg_ids" {
+  description = "Security group IDs for Jenkins EC2"
+  type        = list(string)
 }
+
 variable "region" {}
 
 variable "vpc_id" {}
