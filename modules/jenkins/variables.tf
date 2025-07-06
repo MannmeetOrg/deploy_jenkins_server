@@ -1,5 +1,5 @@
 variable "vpc_id" {
-  description = "Jenkins AMI ID"
+  description = "VPC ID for the Jenkins server"
   type        = string
 }
 
@@ -14,7 +14,7 @@ variable "subnet_id" {
 }
 
 variable "ami_id" {
-  description = "ami id of jenkins image"
+  description = "AMI ID for Jenkins server"
   type        = string
 }
 
@@ -23,11 +23,13 @@ variable "key_pair" {
   type        = string
 }
 
-
 variable "sg_ids" {
-  type = list(string)
+  description = "List of security group IDs (optional if creating inside module)"
+  type        = list(string)
+  default     = []
 }
 
-variable "region" {}
-
-variable "vpc_cidr" {}
+variable "region" {
+  description = "AWS region"
+  type        = string
+}

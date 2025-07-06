@@ -14,3 +14,4 @@ vpc = {
   security_group_ids      = ["sg-04d1ac6f01f77056a"]
 
 }
+
