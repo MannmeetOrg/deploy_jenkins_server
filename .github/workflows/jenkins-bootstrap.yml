@@ -12,42 +12,40 @@ jobs:
       TF_VAR_db_password: ${{ secrets.RDS_PASSWORD }}
 
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
+    - name: Checkout Code
+      uses: actions/checkout@v3
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
-      - name: Install AWS CLI
-        run: |
-          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
-          && unzip awscliv2.zip && sudo ./aws/install
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
 
-      - name: Download key pair from S3
-        run: |
-          aws s3 cp s3://your-bucket/jenkinskey.pem aws_key_pair.pem
-          chmod 400 aws_key_pair.pem
-          ssh-keygen -y -f aws_key_pair.pem > aws_key_pair.pub
-          aws ec2 import-key-pair \
-            --key-name aws-key-pair \
-            --public-key-material fileb://aws_key_pair.pub \
-            --region us-east-1 || echo "Key pair might already exist"      
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: 1.8.0
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v2
+    - name: Download and Register EC2 Key Pair from S3
+      run: |
+        echo "Downloading key from S3..."
+        aws s3 cp s3://jenkins-server-ec2/jenkinskey.pem aws_key_pair.pem
+        
+        echo "Setting file permissions..."
+        chmod 400 aws_key_pair.pem
+        
+        echo "Generating public key..."
+        ssh-keygen -y -f aws_key_pair.pem > aws_key_pair.pub
+        
+        echo "Importing key pair to EC2..."
+        aws ec2 import-key-pair \
+          --key-name aws-key-pair \
+          --public-key-material fileb://aws_key_pair.pub \
+          --region us-east-1 || echo "Key pair might already exist"
 
-      - name: Debug tfvars
-        run: |
-          echo "=== TFVARS CONTENT ==="
-          cat env_main/main.tfvars
-          echo "======================"
+    - name: Terraform Init
+      run: terraform init -var-file=env_main/main.tfvars
 
-      - name: Terraform Init
-        run: terraform init -var-file=env_main/main.tfvars
-
-      - name: Terraform Apply - Jenkins Server Module Only
-        run: terraform apply -var-file=env_main/main.tfvars -auto-approve
-
+    - name: Terraform Apply - Jenkins Module
+      run: terraform apply -target=module.jenkins -var-file=env_main/main.tfvars -auto-approve
