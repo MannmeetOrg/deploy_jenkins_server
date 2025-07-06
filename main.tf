@@ -8,7 +8,6 @@ module "jenkins" {
   region        = var.region
   instance_type = var.instance_type
   subnet_id     = var.subnet_id
-  sg_ids        = var.sg_ids
   key_pair      = var.key_name
   jenkins_s3    = var.jenkins_s3
 
@@ -25,3 +24,4 @@ module "jenkins" {
 # subnet_id          = var.vpc["subnet_id"]
 # sg_ids             = var.vpc["security_group_ids"]
 # key_pair           = var.vpc["key_name"]
+# sg_ids        = var.sg_ids
