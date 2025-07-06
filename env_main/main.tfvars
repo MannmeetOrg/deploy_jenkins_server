@@ -6,5 +6,4 @@ region                  = "us-east-1"
 instance_type           = "t3.micro"
 key_name                = "aws-key-pair"
 subnet_id               = "subnet-0b042f40c13ff1008"
-sg_ids                  = ["sg-04d1ac6f01f77056a"]
 jenkins_s3              = "jenkins-server-ec2"
