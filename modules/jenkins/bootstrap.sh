@@ -14,9 +14,20 @@ sudo systemctl enable jenkins
 sudo systemctl start jenkins
 
 # Install Terraform
-wget https://releases.hashicorp.com/terraform/1.8.0/terraform_1.8.0_linux_amd64.zip
-unzip terraform_1.8.0_linux_amd64.zip
-mv terraform /usr/local/bin/
+  # Install dependencies
+  sudo yum install -y unzip curl jq
+
+  # Get latest version
+  VER=$(curl -s https://checkpoint-api.hashicorp.com/v1/check/terraform | jq -r .current_version)
+
+  # Download and install
+  curl -LO https://releases.hashicorp.com/terraform/${VER}/terraform_${VER}_linux_amd64.zip
+  unzip terraform_${VER}_linux_amd64.zip
+  sudo mv terraform /usr/local/bin/
+  rm terraform_${VER}_linux_amd64.zip
+
+# Verify
+terraform -version
 
 # AWS CLI
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
