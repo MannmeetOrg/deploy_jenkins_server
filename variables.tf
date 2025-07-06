@@ -1,30 +1,34 @@
-
 variable "ami_id" {
-  description = "Jenkins AMI ID"
+  description = "AMI ID for Jenkins server"
+  type        = string
+}
+
+variable "vpc_id" {
+  description = "VPC ID for Jenkins server"
+  type        = string
+}
+
+variable "region" {
+  description = "AWS region"
   type        = string
 }
 
 variable "instance_type" {
-  description = "Instance type for Jenkins server"
+  description = "EC2 instance type for Jenkins"
+  type        = string
+}
+
+variable "key_name" {
+  description = "EC2 key pair for SSH access"
   type        = string
 }
 
 variable "subnet_id" {
-  description = "Subnet ID for Jenkins server"
+  description = "Subnet ID for Jenkins EC2 instance"
   type        = string
 }
-variable "key_name" {}
 
 variable "sg_ids" {
   description = "Security group IDs for Jenkins EC2"
   type        = list(string)
-}
-
-variable "region" {}
-
-variable "vpc_id" {}
-
-variable "vpc" {
-  description = "VPC configuration map"
-  type        = map(any)
 }
