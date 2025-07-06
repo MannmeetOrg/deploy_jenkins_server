@@ -4,7 +4,7 @@ variable "ami_id" {
 }
 
 variable "vpc_id" {
-  description = "VPC ID for Jenkins server"
+  description = "VPC ID"
   type        = string
 }
 
@@ -14,21 +14,21 @@ variable "region" {
 }
 
 variable "instance_type" {
-  description = "Instance type for Jenkins server"
+  description = "Instance type"
   type        = string
 }
 
 variable "subnet_id" {
-  description = "Subnet ID for Jenkins server"
+  description = "Subnet ID"
   type        = string
 }
 
 variable "sg_ids" {
-  description = "Security group IDs for Jenkins EC2"
+  description = "Security Group IDs"
   type        = list(string)
 }
 
 variable "key_pair" {
-  description = "Key pair name for Jenkins server"
+  description = "EC2 Key Pair Name"
   type        = string
 }
