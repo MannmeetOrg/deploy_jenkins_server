@@ -40,3 +40,11 @@ jobs:
       - name: Local PEM Cleanup
         if: always()
         run: rm -f aws-key-pair.pem
+
+      - name: Delete Existing EC2 Key Pair (optional cleanup)
+        run: |
+          echo "Deleting EC2 key pair 'aws-key-pair' from AWS..."
+          aws ec2 delete-key-pair \
+            --key-name aws-key-pair \
+            --region us-east-1 || echo "Key pair might not exist or already deleted"
+
