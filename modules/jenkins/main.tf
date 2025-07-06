@@ -1,6 +1,6 @@
 
 resource "aws_instance" "jenkins" {
-  ami_id                      = data.aws_ami.amazonlinux2023.image_id
+  ami                         = data.aws_ami.amazonlinux2023.image_id
   instance_type               = var.instance_type
   subnet_id                   = var.subnet_id
   associate_public_ip_address = true
