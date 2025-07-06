@@ -5,10 +5,12 @@ on:
 
 jobs:
   plan:
-    name: jenkins-server bootstrap
+    name: Bootstrap Jenkins EC2
     runs-on: ubuntu-latest
+
     env:
       TF_VAR_db_password: ${{ secrets.RDS_PASSWORD }}
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -18,8 +20,12 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-key-pair: ${{ secrets.AWS_KEY_PAIR }}
           aws-region: us-east-1
+
+      - name: Download PEM key from S3
+        run: |
+          aws s3 cp s3://your-secure-bucket/aws-key-pair.pem aws-key-pair.pem
+          chmod 400 aws-key-pair.pem
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
@@ -31,9 +37,8 @@ jobs:
           echo "======================"
 
       - name: Terraform Init
-        run: |
-          terraform init -var-file=env_main/main.tfvars
+        run: terraform init -var-file=env_main/main.tfvars
 
-      - name: Terraform Apply Jenkins Server Module Only
-        run: |
-          terraform apply -target=module.jenkins -var-file=env_main/main.tfvars -auto-approve
+      - name: Terraform Apply - Jenkins Server Module Only
+        run: terraform apply -target=module.jenkins -var-file=env_main/main.tfvars -auto-approve
+
