@@ -1,32 +1,42 @@
-# .github/workflows/jenkins-bootstrap.yml
-
-name: Destroy Jenkins Server
+name: Destroy Jenkins EC2 Infrastructure
 
 on:
   workflow_dispatch:
 
 jobs:
-  bootstrap-jenkins:
+  destroy:
+    name: Destroy Jenkins Server Infra
     runs-on: ubuntu-latest
+
     env:
-      TF_VAR_key_name: ${{ secrets.AWS_KEY_PAIR }}
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_REGION: "us-east-1"
+      TF_VAR_db_password: ${{ secrets.RDS_PASSWORD }}
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Download PEM key from S3 (optional)
+        run: |
+          echo "Downloading PEM key if needed for destroy (optional)"
+          aws s3 cp s3://your-secure-bucket/aws-key-pair.pem aws-key-pair.pem || true
+          chmod 400 aws-key-pair.pem || true
 
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
+        uses: hashicorp/setup-terraform@v2
 
-      - name: Initialize Terraform
-        run: terraform -chdir=terraform init
+      - name: Terraform Init
+        run: terraform init -var-file=env_main/main.tfvars
 
-      - name: Destroy Terraform to delete Jenkins
-        run: |
-          terraform -chdir=terraform destroy -auto-approve \
-            -var="key_name=${{ env.TF_VAR_key_name }}" \
-            -target=aws_instance.jenkins
+      - name: Terraform Destroy (All Resources)
+        run: terraform destroy -var-file=env_main/main.tfvars -auto-approve
 
+      - name: Local PEM Cleanup
+        if: always()
+        run: rm -f aws-key-pair.pem
