@@ -24,7 +24,7 @@ jobs:
 
       - name: Download PEM key from S3
         run: |
-          aws s3 cp s3://jenkins-server-ec2/aws-key-pair.pem aws-key-pair.pem
+          aws s3 cp s3://jenkins-server-ec2/jenkinskey.pem aws-key-pair.pem
           chmod 400 aws-key-pair.pem
 
       - name: Setup Terraform
