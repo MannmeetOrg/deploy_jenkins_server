@@ -23,7 +23,8 @@ jobs:
           aws-region: us-east-1
       - name: Install AWS CLI
         run: |
-          
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
+          && unzip awscliv2.zip && sudo ./aws/install
 
       - name: Download key pair from S3
         run: |
@@ -40,8 +41,9 @@ jobs:
 
       - name: Debug tfvars
         run: |
-          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
-          && unzip awscliv2.zip && sudo ./aws/install
+          echo "=== TFVARS CONTENT ==="
+          cat env_main/main.tfvars
+          echo "======================"
 
       - name: Terraform Init
         run: terraform init -var-file=env_main/main.tfvars
