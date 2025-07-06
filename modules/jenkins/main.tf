@@ -1,20 +1,25 @@
-
+# 1. IAM Role for EC2 (Jenkins)
 resource "aws_iam_role" "jenkins_role" {
   name = "jenkins-role"
 
   assume_role_policy = jsonencode({
-    Version = "2012-10-17"
+    Version = "2012-10-17",
     Statement = [{
-      Action = "sts:AssumeRole"
+      Action = "sts:AssumeRole",
+      Effect = "Allow",
       Principal = {
         Service = "ec2.amazonaws.com"
-      }
-      Effect = "Allow"
-      Sid    = ""
+      },
+      Sid = ""
     }]
   })
+
+  tags = {
+    Name = "jenkins-role"
+  }
 }
 
+# 2. Inline policy for S3 Access (PEM File)
 resource "aws_iam_role_policy" "jenkins_s3_policy" {
   name = "jenkins-s3-policy"
   role = aws_iam_role.jenkins_role.id
@@ -37,11 +42,15 @@ resource "aws_iam_role_policy" "jenkins_s3_policy" {
   })
 }
 
+# 3. IAM Instance Profile to attach to EC2
 resource "aws_iam_instance_profile" "jenkins_profile" {
   name = "jenkins-profile"
   role = aws_iam_role.jenkins_role.name
-}
 
+  tags = {
+    Name = "jenkins-profile"
+  }
+}
 
 
 resource "aws_instance" "jenkins" {
