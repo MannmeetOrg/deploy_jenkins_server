@@ -25,8 +25,8 @@ jobs:
       - name: Download PEM key from S3 (optional)
         run: |
           echo "Downloading PEM key if needed for destroy (optional)"
-          aws s3 cp s3://jenkins-server-ec2/jenkinskey.pem aws-key-pair.pem || true
-          chmod 400 aws-key-pair.pem || true
+          aws s3 cp s3://jenkins-server-ec2/jenkinskey.pem jenkinskey.pem || true
+          chmod 400 jenkinskey.pem || true
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
@@ -39,12 +39,12 @@ jobs:
 
       - name: Local PEM Cleanup
         if: always()
-        run: rm -f aws-key-pair.pem
+        run: rm -f jenkinskey.pem
 
       - name: Delete Existing EC2 Key Pair (optional cleanup)
         run: |
-          echo "Deleting EC2 key pair 'aws-key-pair' from AWS..."
+          echo "Deleting EC2 key pair 'jenkinskey' from AWS..."
           aws ec2 delete-key-pair \
-            --key-name aws-key-pair \
+            --key-name jenkinskey \
             --region us-east-1 || echo "Key pair might not exist or already deleted"
 
