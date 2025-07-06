@@ -23,4 +23,6 @@ variable "security_group_ids" {
 variable "region" {}
 
 variable "vpc_id" {}
-variable "vpc" {}
+variable "vpc" {
+  type = map(any)
+}
