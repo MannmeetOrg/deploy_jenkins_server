@@ -24,6 +24,12 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
 
+      - name: Debug tfvars
+        run: |
+          echo "=== TFVARS CONTENT ==="
+          cat env_main/main.tfvars
+          echo "======================"
+
       - name: Terraform Init
         run: |
           terraform init -var-file=env_main/main.tfvars
