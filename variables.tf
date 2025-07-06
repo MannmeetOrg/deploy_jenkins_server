@@ -23,10 +23,10 @@ variable "subnet_id" {
   type        = string
 }
 
-variable "sg_ids" {
-  description = "Security group IDs for Jenkins EC2"
-  type        = list(string)
-}
+# variable "sg_ids" {
+#   description = "Security group IDs for Jenkins EC2"
+#   type        = list(string)
+# }
 
 variable "key_name" {
   description = "Key pair name for Jenkins server"

@@ -15,7 +15,6 @@ module "jenkins" {
 
 
 
-
 #code with vpc map not used in main.tf file
 # ami_id             = var.vpc["ami_id"]
 # vpc_id             = var.vpc["vpc_id"]
