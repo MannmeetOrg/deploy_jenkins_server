@@ -1,17 +1,34 @@
 #!/bin/bash
-sudo yum update -y
-#JAVA Install
-sudo amazon-linux-extras enable corretto17
-sudo yum install java-17-amazon-corretto -y
-java -version
+set -e
+# INSTALL JAVA and JENKINS on EC2 instance
+  echo "[INFO] Updating system packages..."
+  dnf update -y
 
-# JENKINS INSTALL
-sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
-sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key
-sudo yum upgrade -y
-sudo yum install -y jenkins git unzip
-sudo systemctl enable jenkins
-sudo systemctl start jenkins
+  echo "[INFO] Installing Java (OpenJDK 17)..."
+  dnf install -y java-17-amazon-corretto git
+
+  echo "[INFO] Adding Jenkins repo and importing GPG keys..."
+  curl --silent --location https://pkg.jenkins.io/redhat-stable/jenkins.repo | tee /etc/yum.repos.d/jenkins.repo
+  curl --silent --location https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key | tee /etc/pki/rpm-gpg/RPM-GPG-KEY-jenkins.io
+  rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+
+  echo "[INFO] Installing Jenkins..."
+  dnf install -y jenkins
+
+  echo "[INFO] Enabling and starting Jenkins service..."
+  systemctl daemon-reexec
+  systemctl enable jenkins
+  systemctl start jenkins
+
+  echo "[INFO] Jenkins installation complete."
+  echo "[INFO] Fetching initial admin password:"
+  cat /var/lib/jenkins/secrets/initialAdminPassword || echo "[WARN] Jenkins password file not found yet — may take a minute."
+
+  echo "[INFO] Listening port check:"
+  ss -tuln | grep 8080 || echo "[WARN] Port 8080 not listening — check Jenkins logs."
+
+  echo "[INFO] Done. Visit http://<your-ec2-public-ip>:8080 to access Jenkins."
+
 
 # Install Terraform
   # Install dependencies
